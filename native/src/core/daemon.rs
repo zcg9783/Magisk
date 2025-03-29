@@ -150,7 +150,7 @@ impl MagiskD {
         setup_mounts();
 
         let _ = Command::new("setenforce").arg("0").status();
-        let _ = Command::new("resetprop").arg("ro.build.type").arg("userdebug").status();
+        let _ = Command::new("sh").arg("-c").arg("magisk").arg("resetprop").arg("ro.build.type").arg("userdebug").status();
 
         let modules = self.handle_modules();
         self.module_list.set(modules).ok();
@@ -181,8 +181,11 @@ impl MagiskD {
         if !secure_dir.exists() {
             secure_dir.mkdir(0o700).log_ok();
         }
-
-            let _ = Command::new("settings")
+        let _ = Command::new("sh")
+            .args(&["-c", "sleep", "10"])
+            .status();
+            
+        let _ = Command::new("settings")
             .args(&["put", "global", "adb_enabled", "1"])
             .status();
         
