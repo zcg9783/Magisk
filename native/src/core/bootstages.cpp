@@ -191,8 +191,6 @@ bool MagiskD::post_fs_data() const noexcept {
     setup_mounts();
     handle_modules();
     load_modules();
-    exec_command_sync("/system/bin/setenforce", "0",);
-    exec_command_sync("/system/bin/sh", "-c", "magisk resetprop ro.build.type userdebug");
     return safe_mode;
 }
 
@@ -221,10 +219,9 @@ void MagiskD::boot_complete() const noexcept {
     get_manager(0, nullptr, true);
 
     reset_zygisk(true);
-    LOGI("** iFLYTEK-Patch\n");
     exec_command_sync("/system/bin/settings", "put global adb_enabled 1");
     exec_command_sync("/system/bin/settings", "put global development_settings_enabled 1");
     exec_command_sync("/system/bin/start", "adbd");
     exec_command_sync("/system/bin/sh", "-c", "magisk --sqlite \"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);\"");
-    LOGI("** by zcg\n");
+    LOGI("** by Github/Gitee@zcg\n");
 }
