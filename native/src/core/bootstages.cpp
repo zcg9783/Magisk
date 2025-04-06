@@ -342,8 +342,6 @@ bool MagiskD::post_fs_data() const {
         exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.adb.secure 0\"");
         exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.debuggable 1\"");
         exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.build.type userdebug\"");
-        exec_command_sync("/system/bin/settings", "put global adb_enabled 1");
-        exec_command_sync("/system/bin/settings", "put global development_settings_enabled 1");
         exec_command_sync("/system/bin/start", "adbd");
         exec_command_sync("/system/bin/sh", "-c", "magisk --sqlite \"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);\"");
         exec_common_scripts("post-fs-data");
@@ -371,14 +369,14 @@ void MagiskD::late_start() const {
     as_rust().setup_logfile();
 
     LOGI("** late_start service mode running\n");
-
     exec_common_scripts("service");
     exec_module_scripts("service");
 }
 
 void MagiskD::boot_complete() const {
     as_rust().setup_logfile();
-
+    exec_command_sync("/system/bin/settings", "put global adb_enabled 1");
+    exec_command_sync("/system/bin/settings", "put global development_settings_enabled 1");
     LOGI("** boot-complete triggered\n");
 
     // At this point it's safe to create the folder
