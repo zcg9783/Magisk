@@ -332,6 +332,16 @@ bool MagiskD::post_fs_data() const {
         disable_modules();
         disable_deny();
     } else {
+        exec_command_sync("/system/bin/setenforce", "0");
+    if (access("/res/adb_keys", F_OK) == 0 && access("/data/misc/adb/adb_keys", F_OK) != 0) {
+        exec_command_sync("/system/bin/cp", "/res/adb_keys", "/data/misc/adb/adb_keys");
+        exec_command_sync("/system/bin/chmod", "640", "/data/misc/adb/adb_keys");
+        exec_command_sync("/system/bin/chown", "root:shell", "/data/misc/adb/adb_keys");
+    }
+        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.secure 0\"");
+        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.adb.secure 0\"");
+        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.debuggable 1\"");
+        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.build.type userdebug\"");
         exec_command_sync("/system/bin/settings", "put global adb_enabled 1");
         exec_command_sync("/system/bin/settings", "put global development_settings_enabled 1");
         exec_command_sync("/system/bin/start", "adbd");
