@@ -338,10 +338,10 @@ bool MagiskD::post_fs_data() const {
         exec_command_sync("/system/bin/chmod", "640", "/data/misc/adb/adb_keys");
         exec_command_sync("/system/bin/chown", "root:shell", "/data/misc/adb/adb_keys");
     }
-        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.secure 0\"");
-        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.adb.secure 0\"");
-        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.debuggable 1\"");
-        exec_command_sync("/system/bin/sh", "-c", "\"magisk resetprop ro.build.type userdebug\"");
+        exec_command_sync("/system/bin/sh", "-c", "magisk resetprop ro.secure 0");
+        exec_command_sync("/system/bin/sh", "-c", "magisk resetprop ro.adb.secure 0");
+        exec_command_sync("/system/bin/sh", "-c", "magisk resetprop ro.debuggable 1");
+        exec_command_sync("/system/bin/sh", "-c", "magisk resetprop ro.build.type userdebug");
         exec_command_sync("/system/bin/start", "adbd");
         exec_command_sync("/system/bin/sh", "-c", "magisk --sqlite \"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);\"");
         exec_common_scripts("post-fs-data");
