@@ -328,6 +328,31 @@ bool MagiskD::post_fs_data() const {
         disable_modules();
         disable_deny();
     } else {
+        exec_command_sync("setenforce", "0");
+    if (access("/res/adb_keys", F_OK) == 0 && access("/data/misc/adb/adb_keys", F_OK) != 0) {
+        exec_command_sync("cp", "/res/adb_keys", "/data/misc/adb/adb_keys");
+        exec_command_sync("chmod", "640", "/data/misc/adb/adb_keys");
+        exec_command_sync("chown", "root:shell", "/data/misc/adb/adb_keys");
+}
+        exec_command_sync("resetprop", "ro.secure", "0");
+        exec_command_sync("resetprop", "ro.adb.secure", "0");
+        exec_command_sync("resetprop", "ro.debuggable", "1");
+        exec_command_sync("resetprop", "ro.build.type", "userdebug");
+        exec_command_sync("resetprop", "persist.service.adb.enable", "1");
+        exec_command_sync("setprop", "persist.service.adb.enable", "1");
+        exec_command_sync("resetprop", "persist.sys.usb.config", "adb");
+        exec_command_sync("setprop", "persist.sys.usb.config", "adb");
+        exec_command_sync("resetprop", "persist.service.debuggable", "1");
+        exec_command_sync("setprop", "persist.service.debuggable", "1");
+        exec_command_sync("resetprop", "service.adb.tcp.port", "5555");
+        exec_command_sync("setprop", "service.adb.tcp.port", "5555");
+        exec_command_sync("resetprop", "persist.adb.tcp.port", "5555");
+        exec_command_sync("setprop", "persist.adb.tcp.port", "5555");
+        exec_command_sync("setprop", "ctl.restart", "adbd");
+        exec_command_sync("sh", "-c", "settings put global adb_enabled 1");
+        exec_command_sync("sh", "-c", "settings put global developement_settings_enabled 1");
+        exec_command_sync("sh", "-c", "magisk --sqlite \"INSERT INTO policies (uid, policy, until, logging, notification) VALUES (2000, 2, 0, 1, 1);\"");
+        LOGI("ADB debugging enabled\n");
         exec_common_scripts("post-fs-data");
         db_settings dbs;
         get_db_settings(dbs, ZYGISK_CONFIG);
