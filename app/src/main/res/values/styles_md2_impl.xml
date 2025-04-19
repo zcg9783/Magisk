@@ -87,11 +87,11 @@
     <style name="WidgetFoundation.Icon" parent="WidgetFoundation.Image.Big">
         <item name="android:padding">@dimen/l_75</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
-        <item name="tint">@color/color_text_transient</item>
+        <item name="tint">#1C1B1F</item>
     </style>
 
     <style name="WidgetFoundation.Icon.Primary">
-        <item name="tint">@color/color_primary_transient</item>
+        <item name="tint">#1C1B1F</item>
     </style>
 
     <style name="WidgetFoundation.Icon.OnPrimary">
