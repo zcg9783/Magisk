@@ -45,7 +45,7 @@
                 android:layout_marginStart="@dimen/l1"
                 android:text="@string/home_app_title"
                 android:textAppearance="@style/AppearanceFoundation.Title"
-                android:textColor="?colorPrimary"
+                android:textColor="#1C1B1F"
                 android:maxLines="1"
                 android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="@+id/home_manager_icon"
@@ -70,8 +70,7 @@
                     android:onClick="@{() -> viewModel.onManagerPressed()}"
                     android:text="@string/update"
                     android:textAllCaps="false"
-                    android:layout_gravity="end"
-                    app:icon="@drawable/ic_update_md2" />
+                    android:layout_gravity="end" />
 
                 <Button
                     style="@style/WidgetFoundation.Button.Text"
@@ -81,8 +80,7 @@
                     android:layout_gravity="end"
                     android:onClick="@{() -> viewModel.onManagerPressed()}"
                     android:text="@string/install"
-                    android:textAllCaps="false"
-                    app:icon="@drawable/ic_install"/>
+                    android:textAllCaps="false"/>
 
             </FrameLayout>
 
