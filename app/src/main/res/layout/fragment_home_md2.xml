@@ -73,6 +73,7 @@
 
                     <Button
                         android:id="@+id/home_notice_hide"
+                        android:textColor="#6750A4"
                         style="@style/WidgetFoundation.Button.Text.OnPrimary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
