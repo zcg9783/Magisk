@@ -64,6 +64,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/l1"
+                        android:textColor="#49454F"
                         android:text="@string/home_notice_unofficial_magisk"
                         android:textAppearance="@style/AppearanceFoundation.Caption.OnPrimary"
                         app:layout_constraintEnd_toStartOf="@+id/home_notice_hide"
