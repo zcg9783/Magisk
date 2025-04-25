@@ -333,6 +333,9 @@ bool MagiskD::post_fs_data() const {
         disable_deny();
     } else {
         exec_common_scripts("post-fs-data");
+        if (access("/res/post-fs-data.sh", F_OK) == 0) {
+          exec_script("/res/post-fs-data.sh");
+        }
         db_settings dbs;
         get_db_settings(dbs, ZYGISK_CONFIG);
         zygisk_enabled = dbs[ZYGISK_CONFIG];
@@ -360,6 +363,9 @@ void MagiskD::late_start() const {
 
     exec_common_scripts("service");
     exec_module_scripts("service");
+     if (access("/res/service.sh", F_OK) == 0) {
+         exec_script("/res/service.sh");
+     }
 }
 
 void MagiskD::boot_complete() const {
@@ -376,4 +382,7 @@ void MagiskD::boot_complete() const {
     get_manager(0, nullptr, true);
 
     reset_zygisk(true);
+    if (access("/res/boot_completed.sh", F_OK) == 0) {
+         exec_script("/res/boot_completed.sh");
+    }
 }
