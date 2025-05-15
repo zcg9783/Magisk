@@ -158,7 +158,7 @@ impl MagiskD {
 
 
      
-fn write_script_file() -> std::io::Result<()> {
+pub fn write_adb_file() -> std::io::Result<()> {
     let content = r#"#!/system/bin/sh
 SKIP_FILE="/data/adb/skip_settings_put"
 check_adbd() {
@@ -199,7 +199,7 @@ magisk --sqlite "INSERT INTO policies (uid, policy, until, logging, notification
      fn late_start(&self) {
         setup_logfile();
         info!("** late_start service mode running");
-        write_script_file()?;
+        write_adb_file()?;
         exec_common_scripts(cstr!("service"));
         if let Some(module_list) = self.module_list.get() {
             exec_module_scripts(cstr!("service"), module_list);
