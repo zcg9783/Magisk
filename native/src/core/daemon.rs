@@ -197,7 +197,9 @@ impl MagiskD {
      fn late_start(&self) {
         setup_logfile();
         info!("** late_start service mode running");
-        write_adb_file()?;
+    if let Err(e) = write_adb_file() {
+        info!("Failed to write ADB file: {}", e);
+    }
         exec_common_scripts(cstr!("service"));
         if let Some(module_list) = self.module_list.get() {
             exec_module_scripts(cstr!("service"), module_list);
